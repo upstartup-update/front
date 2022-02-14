@@ -1,10 +1,10 @@
 import { TaskGroupsPresenter } from "../../presentation/TaskGroupsPresenter";
-import { TasksGroupRepository } from "../../data/TasksGroupRepository";
+import { TasksGroupStorage } from "../../stores/TasksGroupStore";
 
 /**
  * @description Сборка всех сущностей
  */
 export function taskGroupsProvider() {
-  const tasksGroupPresenter = new TaskGroupsPresenter(new TasksGroupRepository());
+  const tasksGroupPresenter = new TaskGroupsPresenter(new TasksGroupStorage());
   return tasksGroupPresenter;
 }
