@@ -14,7 +14,10 @@ function Board() {
     <Div style={{ display: "flex" }}>
       {tasksGroupPresenterState.taskGroups.map((task) => (
         <div style={{ paddingRight: 5, paddingLeft: 5 }}>
-          <TasksGroup task={task} />
+          <TasksGroup
+            task={task}
+            addTask={(title) => tasksGroupPresenter.createTask(title, task.id)}
+          />
         </div>
       ))}
 

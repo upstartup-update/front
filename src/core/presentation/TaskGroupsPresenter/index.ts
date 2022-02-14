@@ -1,4 +1,4 @@
-import { TasksGroupStorage } from "../../stores/TasksGroupStore";
+import { TasksGroupStore } from "../../stores/TasksStore";
 import { PresenterObservable } from "../common/PresenterObservable";
 import { TaskGroupsSate } from "./state";
 
@@ -8,10 +8,10 @@ import { TaskGroupsSate } from "./state";
  * Тянет данные из репозитория и передает запросы к репозиторию
  */
 export class TaskGroupsPresenter extends PresenterObservable<TaskGroupsSate> {
-  constructor(private tasksGroupRepository: TasksGroupStorage) {
+  constructor(private tasksGroupStore: TasksGroupStore) {
     super({ taskGroups: [] });
 
-    this.tasksGroupRepository.loadTasksGroup();
+    this.tasksGroupStore.loadTasksGroup();
 
     //todo убрать
     this.createTaskGroup("hello");
@@ -20,7 +20,12 @@ export class TaskGroupsPresenter extends PresenterObservable<TaskGroupsSate> {
   createTaskGroup = (title: string) => {
     if (title === "") return;
 
-    const taskGroups = this.tasksGroupRepository.createTaskGroup(title);
+    const taskGroups = this.tasksGroupStore.createTaskGroup(title);
+    this.changeState(() => ({ taskGroups }));
+  };
+
+  createTask = (title: string, id: number) => {
+    const taskGroups = this.tasksGroupStore.createTask(title, id);
     this.changeState(() => ({ taskGroups }));
   };
 }

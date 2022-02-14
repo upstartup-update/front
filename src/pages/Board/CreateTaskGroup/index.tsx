@@ -8,13 +8,20 @@ interface HookValueReturnProps {
 }
 
 function CreateTaskGroup({ onCreate }: HookValueReturnProps) {
-  const [value, setValue] = useValue();
+  const [value, setValue, clear] = useValue();
 
   return (
     <Group style={{ width: 272 }}>
       <Input type="text" placeholder="Ввести заголовок списка" onChange={setValue} value={value} />
       <Spacing size={10} />
-      <Button onClick={() => onCreate(value)}>Добавить список</Button>
+      <Button
+        onClick={() => {
+          onCreate(value);
+          clear();
+        }}
+      >
+        Добавить список
+      </Button>
     </Group>
   );
 }
