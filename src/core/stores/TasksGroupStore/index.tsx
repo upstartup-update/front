@@ -1,9 +1,9 @@
 import { TaskGroupModel } from "../../entities/TaskGroupModel";
 
 /**
- *  @description Этот репозиторий отвечает захранение списков задач (колонок)
+ *  @description Этот стор отвечает захранение списков задач и бизнес логику  (колонок)
  */
-export class TasksGroupRepository {
+export class TasksGroupStorage {
   private taskGroups: TaskGroupModel[] = [];
 
   loadTasksGroup() {

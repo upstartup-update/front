@@ -1,4 +1,4 @@
-import { TasksGroupRepository } from "../../data/TasksGroupRepository";
+import { TasksGroupStorage } from "../../stores/TasksGroupStore";
 import { PresenterObservable } from "../common/PresenterObservable";
 import { TaskGroupsSate } from "./state";
 
@@ -8,7 +8,7 @@ import { TaskGroupsSate } from "./state";
  * Тянет данные из репозитория и передает запросы к репозиторию
  */
 export class TaskGroupsPresenter extends PresenterObservable<TaskGroupsSate> {
-  constructor(private tasksGroupRepository: TasksGroupRepository) {
+  constructor(private tasksGroupRepository: TasksGroupStorage) {
     super({ taskGroups: [] });
 
     this.tasksGroupRepository.loadTasksGroup();
