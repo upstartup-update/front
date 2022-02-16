@@ -2,6 +2,7 @@ import { TasksGroupStore } from "../../stores/TasksStore";
 import { PresenterObservable } from "../common/PresenterObservable";
 import { TaskGroupsSate } from "./state";
 import { TaskModel } from "../../entities/TaskModel";
+import { TaskUpdateState } from "../TaskUpdatePresenter/type";
 
 /**
  * @description Отвечает за связь данных и представления,
@@ -31,14 +32,17 @@ export class TaskGroupsPresenter extends PresenterObservable<TaskGroupsSate> {
   };
 
   //todo пересмотреть это
-  setTask = (newTask: TaskModel) => {
-    const foundTask = this.state.taskGroups.find((taskGroup) =>
-      taskGroup.tasks.find((task) => task.id === newTask.id),
+  setTask = (id: number, updateTaskData: TaskUpdateState) => {
+    const foundTaskGroup = this.state.taskGroups.find((taskGroup) =>
+      taskGroup.tasks.find((task) => task.id === id),
     );
+
+    if (!foundTaskGroup) return;
+
+    const foundTask = foundTaskGroup.tasks.find((task) => task.id === id);
     if (!foundTask) return;
 
-    const taskIndex = foundTask.tasks.findIndex((task) => task.id === newTask.id);
-    foundTask.tasks[taskIndex] = newTask;
+    Object.assign(foundTask, updateTaskData);
 
     this.changeState(({ taskGroups }) => ({ taskGroups }));
   };

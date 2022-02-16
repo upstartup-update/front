@@ -15,8 +15,8 @@ function Board() {
       {tasksGroupPresenterState.taskGroups.map((task) => (
         <div style={{ paddingRight: 5, paddingLeft: 5 }}>
           <TasksGroup
-            onSave={tasksGroupPresenter.setTask}
             task={task}
+            onSave={tasksGroupPresenter.setTask}
             addTask={(title) => tasksGroupPresenter.createTask(title, task.id)}
           />
         </div>

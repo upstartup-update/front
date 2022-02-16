@@ -14,13 +14,14 @@ import { TaskUpdatePresenter } from "../../../core/presentation/TaskUpdatePresen
 import { usePresenterObservableState } from "../../../hooks/usePlocState";
 import { changeValue } from "../../../utils/changeValue";
 import { TaskModel } from "../../../core/entities/TaskModel";
+import { TaskUpdateState } from "../../../core/presentation/TaskUpdatePresenter/type";
 
 export const UPDATE_TASK_MODAL_ID = "UPDATE_TASK_MODAL_ID";
 
 interface UpdateTaskProps {
   activeModal: string | null;
   closeModal: (id: string | null) => void;
-  onSave: (task: TaskModel) => void;
+  onSave: (task: TaskUpdateState) => void;
   task: TaskModel | null;
 }
 
@@ -32,7 +33,6 @@ function UpdateTask({ closeModal, activeModal, task, onSave }: UpdateTaskProps) 
     task && taskUpdatePresenter.setTaskData(task);
   }, [task]);
 
-  console.log(tasksGroupPresenterState.taskModel.description);
   return (
     <ModalRoot activeModal={activeModal} onClose={closeModal}>
       <ModalPage
@@ -43,7 +43,7 @@ function UpdateTask({ closeModal, activeModal, task, onSave }: UpdateTaskProps) 
             right={
               <PanelHeaderSubmit
                 onClick={() => {
-                  onSave(tasksGroupPresenterState.taskModel);
+                  onSave(tasksGroupPresenterState);
                   closeModal(null);
                 }}
               />
@@ -57,13 +57,13 @@ function UpdateTask({ closeModal, activeModal, task, onSave }: UpdateTaskProps) 
           <FormItem top="Название">
             <Input
               placeholder="Название задачи"
-              value={tasksGroupPresenterState.taskModel.title}
+              value={tasksGroupPresenterState.title}
               onChange={changeValue(taskUpdatePresenter.setTitle)}
             />
           </FormItem>
           <FormItem top="Описание задачи">
             <Textarea
-              value={tasksGroupPresenterState.taskModel.description}
+              value={tasksGroupPresenterState.description}
               onChange={changeValue(taskUpdatePresenter.setDescription)}
             />
           </FormItem>

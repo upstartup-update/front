@@ -5,10 +5,11 @@ import { TaskGroupModel } from "../../core/entities/TaskGroupModel";
 import useValue from "../../hooks/useValue";
 import UpdateTask, { UPDATE_TASK_MODAL_ID } from "../../pages/Board/UpdateTask";
 import { TaskModel } from "../../core/entities/TaskModel";
+import { TaskUpdateState } from "../../core/presentation/TaskUpdatePresenter/type";
 
 interface TasksGroupProps {
   task: TaskGroupModel;
-  onSave: (task: TaskModel) => void;
+  onSave: (id: number, task: TaskUpdateState) => void;
   addTask: (title: string) => void;
 }
 
@@ -20,7 +21,7 @@ function TasksGroup({ task, addTask, onSave }: TasksGroupProps) {
   return (
     <Group style={{ width: 272 }}>
       <UpdateTask
-        onSave={onSave}
+        onSave={(taskUpdate) => currentTask?.id && onSave(currentTask.id, taskUpdate)}
         activeModal={activeModal}
         closeModal={() => {
           setCurrentTask(null);
