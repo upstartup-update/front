@@ -1,4 +1,4 @@
-import { TaskGroupsPresenter } from "../../presentation/TaskGroupsPresenter";
+import { TaskGroupsPresenter } from "../../presentation/TaskPresenter";
 import { TasksGroupStore } from "../../stores/TasksStore";
 
 /**
