@@ -1,4 +1,4 @@
-import { createContext, useMemo } from "react";
+import { useMemo } from "react";
 import { Div } from "@vkontakte/vkui";
 
 import { taskGroupsProvider } from "../../core/providers/taskGroupProvider";
@@ -14,7 +14,11 @@ function Board() {
     <Div style={{ display: "flex" }}>
       {tasksGroupPresenterState.taskGroups.map((task) => (
         <div style={{ paddingRight: 5, paddingLeft: 5 }}>
-          <TasksGroup task={task} />
+          <TasksGroup
+            onSave={tasksGroupPresenter.setTask}
+            task={task}
+            addTask={(title) => tasksGroupPresenter.createTask(title, task.id)}
+          />
         </div>
       ))}
 
