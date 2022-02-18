@@ -1,5 +1,5 @@
 import { generateId } from "../../../utils/numberId";
-import { TaskModel } from "../TaskModel";
+import { Task } from "../Task";
 
 /**
  *  @description Модель списка задач (колонка), простой объект со свойствами, хранит в себе задачи
@@ -7,7 +7,7 @@ import { TaskModel } from "../TaskModel";
 export class TaskGroupModel {
   id = generateId();
 
-  tasks: TaskModel[] = [];
+  tasks: Task[] = [];
 
   constructor(public title: string) {
     this.title = title;
@@ -17,7 +17,11 @@ export class TaskGroupModel {
     this.title = title;
   }
 
-  addTask(title: string) {
-    this.tasks.push(new TaskModel(title));
+  addTask(title: string, id: number) {
+    this.tasks.push({ title, description: "", id });
+  }
+
+  getTaskById(id: number) {
+    return this.tasks.find((task) => task.id === id);
   }
 }

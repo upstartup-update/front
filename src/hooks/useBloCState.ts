@@ -1,19 +1,19 @@
 import { useEffect, useState } from "react";
 
-import { PresenterObservable } from "../core/presentation/common/PresenterObservable";
+import { BLoC } from "../core/presentation/common/BLoC";
 
 /**
  * Отвечает за связь презенторов с реактом
  * Подписывается на изменения презентора
  * и при изменении состояния вызывает setState, что провоцирует перерендер реакта
  */
-export function usePresenterObservableState<S>(presenterObservable: PresenterObservable<S>) {
-  const [state, setState] = useState(presenterObservable.state);
+export function useBloCState<S>(bloc: BLoC<S>) {
+  const [state, setState] = useState(bloc.state);
 
   useEffect(() => {
-    presenterObservable.subscribe(setState);
-    return () => presenterObservable.unsubscribe(setState);
-  }, [presenterObservable]);
+    bloc.subscribe(setState);
+    return () => bloc.unsubscribe(setState);
+  }, [bloc]);
 
   return state;
 }

@@ -10,29 +10,28 @@ import {
 } from "@vkontakte/vkui";
 import { memo, useEffect, useMemo } from "react";
 //todo импорты оптимизировать
-import { TaskUpdatePresenter } from "../../../core/presentation/TaskUpdatePresenter";
-import { usePresenterObservableState } from "../../../hooks/usePlocState";
+import { TaskUpdateBLoC } from "../../../core/presentation/TaskUpdateBLoC";
+import { useBloCState } from "../../../hooks/useBloCState";
 import { changeValue } from "../../../utils/changeValue";
-import { TaskModel } from "../../../core/entities/TaskModel";
+import { Task } from "../../../core/entities/Task";
 
 export const UPDATE_TASK_MODAL_ID = "UPDATE_TASK_MODAL_ID";
 
 interface UpdateTaskProps {
   activeModal: string | null;
   closeModal: (id: string | null) => void;
-  onSave: (task: TaskModel) => void;
-  task: TaskModel | null;
+  onSave: (task: Omit<Task, "id">) => void;
+  task: Task | null;
 }
 
 function UpdateTask({ closeModal, activeModal, task, onSave }: UpdateTaskProps) {
-  const taskUpdatePresenter = useMemo(() => new TaskUpdatePresenter(), []);
-  const tasksGroupPresenterState = usePresenterObservableState(taskUpdatePresenter);
+  const taskUpdatePresenter = useMemo(() => new TaskUpdateBLoC(), []);
+  const tasksGroupPresenterState = useBloCState(taskUpdatePresenter);
 
   useEffect(() => {
     task && taskUpdatePresenter.setTaskData(task);
   }, [task]);
 
-  console.log(tasksGroupPresenterState.taskModel.description);
   return (
     <ModalRoot activeModal={activeModal} onClose={closeModal}>
       <ModalPage
@@ -43,7 +42,7 @@ function UpdateTask({ closeModal, activeModal, task, onSave }: UpdateTaskProps) 
             right={
               <PanelHeaderSubmit
                 onClick={() => {
-                  onSave(tasksGroupPresenterState.taskModel);
+                  onSave(tasksGroupPresenterState);
                   closeModal(null);
                 }}
               />
@@ -57,13 +56,13 @@ function UpdateTask({ closeModal, activeModal, task, onSave }: UpdateTaskProps) 
           <FormItem top="Название">
             <Input
               placeholder="Название задачи"
-              value={tasksGroupPresenterState.taskModel.title}
+              value={tasksGroupPresenterState.title}
               onChange={changeValue(taskUpdatePresenter.setTitle)}
             />
           </FormItem>
           <FormItem top="Описание задачи">
             <Textarea
-              value={tasksGroupPresenterState.taskModel.description}
+              value={tasksGroupPresenterState.description}
               onChange={changeValue(taskUpdatePresenter.setDescription)}
             />
           </FormItem>

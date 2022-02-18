@@ -4,23 +4,23 @@ import { Button, Cell, Group, Input, List, Spacing, Title } from "@vkontakte/vku
 import { TaskGroupModel } from "../../core/entities/TaskGroupModel";
 import useValue from "../../hooks/useValue";
 import UpdateTask, { UPDATE_TASK_MODAL_ID } from "../../pages/Board/UpdateTask";
-import { TaskModel } from "../../core/entities/TaskModel";
+import { Task } from "../../core/entities/Task";
 
 interface TasksGroupProps {
   task: TaskGroupModel;
-  onSave: (task: TaskModel) => void;
+  onSave: (id: number, task: Omit<Task, "id">) => void;
   addTask: (title: string) => void;
 }
 
 function TasksGroup({ task, addTask, onSave }: TasksGroupProps) {
   const [value, setValue, clear] = useValue();
   const [activeModal, setActiveModal] = useState<string | null>(null);
-  const [currentTask, setCurrentTask] = useState<TaskModel | null>(null);
+  const [currentTask, setCurrentTask] = useState<Task | null>(null);
 
   return (
     <Group style={{ width: 272 }}>
       <UpdateTask
-        onSave={onSave}
+        onSave={(taskUpdate) => currentTask?.id && onSave(currentTask.id, taskUpdate)}
         activeModal={activeModal}
         closeModal={() => {
           setCurrentTask(null);
