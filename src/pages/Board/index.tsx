@@ -2,13 +2,13 @@ import { useMemo } from "react";
 import { Div } from "@vkontakte/vkui";
 
 import { taskGroupsProvider } from "../../core/providers/taskGroupProvider";
-import { usePresenterObservableState } from "../../hooks/usePlocState";
+import { useBloCState } from "../../hooks/useBloCState";
 import TasksGroup from "../../components/TasksGroups";
 import CreateTaskGroup from "./CreateTaskGroup";
 
 function Board() {
   const tasksGroupPresenter = useMemo(taskGroupsProvider, []);
-  const tasksGroupPresenterState = usePresenterObservableState(tasksGroupPresenter);
+  const tasksGroupPresenterState = useBloCState(tasksGroupPresenter);
 
   return (
     <Div style={{ display: "flex" }}>

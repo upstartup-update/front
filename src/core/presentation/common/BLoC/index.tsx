@@ -7,7 +7,7 @@ type StateChanger<State> = (state: State) => State;
  *  и методы подписки и отписки, при изменении состояния, нужно вручную вызвать changeState,
  *  чтобы уведомить представление об изменениях
  */
-export class PresenterObservable<State> {
+export class BLoC<State> {
   private listeners: Subscription<State>[] = [];
 
   constructor(private internalState: State) {}
