@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { Provider } from "react-redux";
 import {
   AdaptivityProvider,
   AppRoot,
@@ -12,7 +13,6 @@ import "@vkontakte/vkui/dist/vkui.css";
 import { store } from "./core/store";
 import Board from "./pages/Board";
 
-import { Provider } from "react-redux";
 
 const App = () => {
   const { viewWidth } = useAdaptivity();
