@@ -5,19 +5,26 @@ import { taskGroupsProvider } from "../../core/providers/taskGroupProvider";
 import { useBloCState } from "../../hooks/useBloCState";
 import TasksGroup from "../../components/TasksGroups";
 import CreateTaskGroup from "./CreateTaskGroup";
+import { useSelectorApp } from "../../core/store";
+import { useDispatch } from "react-redux";
+import { createTaskAction, createTaskGroupAction } from "../../core/store/tasks/actions";
 
 function Board() {
   const tasksGroupPresenter = useMemo(taskGroupsProvider, []);
-  const tasksGroupPresenterState = useBloCState(tasksGroupPresenter);
+
+  const dispatch = useDispatch();
+
+  const taskGroups = useSelectorApp((state) => state.tasks.taskGroups);
+  console.log(taskGroups);
 
   return (
     <Div style={{ display: "flex" }}>
-      {tasksGroupPresenterState.taskGroups.map((task) => (
+      {taskGroups.map((task) => (
         <div style={{ paddingRight: 5, paddingLeft: 5 }}>
           <TasksGroup
             task={task}
             onSave={tasksGroupPresenter.setTask}
-            addTask={(title) => tasksGroupPresenter.createTask(title, task.id)}
+            addTask={(title) => dispatch(createTaskAction(title))}
           />
         </div>
       ))}

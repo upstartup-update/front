@@ -7,7 +7,7 @@ import UpdateTask, { UPDATE_TASK_MODAL_ID } from "../../pages/Board/UpdateTask";
 import { Task } from "../../core/entities/Task";
 
 interface TasksGroupProps {
-  task: TaskGroupModel;
+  task: any;
   onSave: (id: number, task: Omit<Task, "id">) => void;
   addTask: (title: string) => void;
 }
@@ -33,7 +33,7 @@ function TasksGroup({ task, addTask, onSave }: TasksGroupProps) {
       </Title>
       <Spacing size={10} />
       <List>
-        {task.tasks.map((item) => (
+        {task.tasks.map((item: any) => (
           <Cell
             key={item.id}
             onClick={() => {
