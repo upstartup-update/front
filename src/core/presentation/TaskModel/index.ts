@@ -1,6 +1,7 @@
+import { action, makeObservable, observable } from "mobx";
+
 import { TasksGroupStore } from "../../stores/TasksStore";
-import { BLoC } from "../common/BLoC";
-import { TaskGroupsSate } from "./state";
+import { TaskGroupModel } from "../../entities/TaskGroupModel";
 import { Task } from "../../entities/Task";
 
 /**
@@ -8,40 +9,45 @@ import { Task } from "../../entities/Task";
  * связывает модели списков задач с представлением.
  * Тянет данные из репозитория и передает запросы к репозиторию
  */
-export class TaskBloC extends BLoC<TaskGroupsSate> {
-  constructor(private tasksGroupStore: TasksGroupStore) {
-    super({ taskGroups: [] });
+export class TaskModel {
+  @observable.shallow
+  taskGroups: TaskGroupModel[] = [];
 
+  constructor(private tasksGroupStore: TasksGroupStore) {
     this.tasksGroupStore.loadTasksGroup();
+    makeObservable(this);
 
     //todo убрать
     this.createTaskGroup("hello");
   }
 
+  @action
   createTaskGroup = (title: string) => {
     if (title === "") return;
-    this.changeState(() => ({ taskGroups: this.tasksGroupStore.createTaskGroup(title) }));
+    this.taskGroups = this.tasksGroupStore.createTaskGroup(title);
   };
 
+  @action
   createTask = (title: string, id: number) => {
-    this.changeState(() => ({ taskGroups: this.tasksGroupStore.createTask(title, id) }));
+    if (title === "") return;
+    this.taskGroups = this.tasksGroupStore.createTask(title, id);
   };
 
-  //todo пересмотреть это
+  findTaskGroupById(taskGroupsId: number) {
+    return this.taskGroups.find((taskGroup) =>
+      taskGroup.tasks.find((task) => task.id === taskGroupsId),
+    );
+  }
+
+  @action
   setTask = (taskId: number, updateTaskData: Omit<Task, "id">) => {
     const foundTask = this.findTaskById(taskId);
     if (!foundTask) return;
 
     Object.assign(foundTask, updateTaskData);
 
-    this.changeState(({ taskGroups }) => ({ taskGroups }));
+    this.taskGroups = [...this.taskGroups];
   };
-
-  findTaskGroupById(taskGroupsId: number) {
-    return this.state.taskGroups.find((taskGroup) =>
-      taskGroup.tasks.find((task) => task.id === taskGroupsId),
-    );
-  }
 
   findTaskById(taskId: number) {
     return this.findTaskGroupById(taskId)?.getTaskById(taskId);
