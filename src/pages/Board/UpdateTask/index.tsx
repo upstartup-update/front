@@ -10,10 +10,10 @@ import {
 } from "@vkontakte/vkui";
 import { memo, useEffect, useMemo } from "react";
 //todo импорты оптимизировать
-import { TaskUpdateBLoC } from "../../../core/presentation/TaskUpdateBLoC";
-import { useBloCState } from "../../../hooks/useBloCState";
 import { changeValue } from "../../../utils/changeValue";
 import { Task } from "../../../core/entities/Task";
+import { TaskUpdateModel } from "../../../core/presentation/TaskUpdateModel";
+import { Observer } from "mobx-react-lite";
 
 export const UPDATE_TASK_MODAL_ID = "UPDATE_TASK_MODAL_ID";
 
@@ -25,11 +25,10 @@ interface UpdateTaskProps {
 }
 
 function UpdateTask({ closeModal, activeModal, task, onSave }: UpdateTaskProps) {
-  const taskUpdatePresenter = useMemo(() => new TaskUpdateBLoC(), []);
-  const tasksGroupPresenterState = useBloCState(taskUpdatePresenter);
+  const taskUpdateModel = useMemo(() => new TaskUpdateModel(), []);
 
   useEffect(() => {
-    task && taskUpdatePresenter.setTaskData(task);
+    task && taskUpdateModel.setTaskData(task);
   }, [task]);
 
   return (
@@ -42,7 +41,7 @@ function UpdateTask({ closeModal, activeModal, task, onSave }: UpdateTaskProps) 
             right={
               <PanelHeaderSubmit
                 onClick={() => {
-                  onSave(tasksGroupPresenterState);
+                  onSave(taskUpdateModel.getModelData());
                   closeModal(null);
                 }}
               />
@@ -54,17 +53,25 @@ function UpdateTask({ closeModal, activeModal, task, onSave }: UpdateTaskProps) 
       >
         <Group>
           <FormItem top="Название">
-            <Input
-              placeholder="Название задачи"
-              value={tasksGroupPresenterState.title}
-              onChange={changeValue(taskUpdatePresenter.setTitle)}
-            />
+            <Observer>
+              {() => (
+                <Input
+                  placeholder="Название задачи"
+                  value={taskUpdateModel.title}
+                  onChange={changeValue(taskUpdateModel.setTitle)}
+                />
+              )}
+            </Observer>
           </FormItem>
           <FormItem top="Описание задачи">
-            <Textarea
-              value={tasksGroupPresenterState.description}
-              onChange={changeValue(taskUpdatePresenter.setDescription)}
-            />
+            <Observer>
+              {() => (
+                <Textarea
+                  value={taskUpdateModel.description}
+                  onChange={changeValue(taskUpdateModel.setDescription)}
+                />
+              )}
+            </Observer>
           </FormItem>
         </Group>
       </ModalPage>
