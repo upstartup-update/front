@@ -25,7 +25,7 @@ function TasksGroup({ task, addTask, onSave }: TasksGroupProps) {
   }, []);
 
   return (
-    <Group style={{ width: 272 }}>
+    <Group>
       <UpdateTask
         onSave={(taskUpdate) => currentTask?.id && onSave(currentTask.id, taskUpdate)}
         activeModal={activeModal}
