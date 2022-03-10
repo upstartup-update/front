@@ -31,7 +31,7 @@ import {Icon28NewsfeedOutline, Icon28ServicesOutline, Icon56NewsfeedOutline} fro
 const App = withAdaptivity(
     ({ viewWidth }) => {
         const platform = usePlatform();
-        const [activeStory, setActiveStory] = React.useState("profile");
+        const [activeStory, setActiveStory] = React.useState("feed");
         const onStoryChange = (e: any) => setActiveStory(e.currentTarget.dataset.story);
         const isDesktop = false;
         //(viewWidth >= ViewWidth.TABLET)

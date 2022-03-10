@@ -18,6 +18,7 @@ import {
     Icon28Rectangle2Outline
 } from "@vkontakte/icons";
 import Board from "./Board";
+import Header from "./Header";
 
 
 const mainHeaderContexts = [
@@ -50,47 +51,7 @@ function BoardIndex() {
             style={{ justifyContent: "center" }}
             header={hasHeader && <PanelHeader separator={false} />}
         >
-            <PanelHeader
-                left={<PanelHeaderBack />}
-                right={
-                    <PanelHeaderButton>
-                        <Icon28AddOutline />
-                    </PanelHeaderButton>
-                }
-            >
-                <PanelHeaderContent
-                    aside={
-                        <Icon16Dropdown
-                            style={{
-                                transform: `rotate(${
-                                    contextOpened ? "180deg" : "0"
-                                })`,
-                            }}
-                        />
-                    }
-                    onClick={toggleContext}
-                >
-                    Communities
-                </PanelHeaderContent>
-            </PanelHeader>
-            <PanelHeaderContext
-                opened={contextOpened}
-                onClose={toggleContext}
-            >
-                <List>
-                    {
-                        mainHeaderContexts.map(headerContext => (
-                            <Cell
-                                before={headerContext.icon}
-                                after={<Icon24Done fill="var(--accent)" />}
-                                data-mode={headerContext.id}
-                            >
-                                {headerContext.title}
-                            </Cell>
-                        ))
-                    }
-                </List>
-            </PanelHeaderContext>
+            <Header/>
             <Board />
         </SplitLayout>
 
