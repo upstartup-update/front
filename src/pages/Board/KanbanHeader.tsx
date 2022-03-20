@@ -1,4 +1,4 @@
-import React, {useMemo, useState} from "react";
+import React, {useCallback, useEffect, useMemo, useState} from "react";
 import { Observer } from "mobx-react-lite";
 import {
     Cell,
@@ -7,7 +7,7 @@ import {
     PanelHeaderBack,
     PanelHeaderButton,
     PanelHeaderContent,
-    PanelHeaderContext,
+    PanelHeaderContext, Separator,
     SplitLayout, Switch, usePlatform, VKCOM
 } from "@vkontakte/vkui";
 import {
@@ -21,19 +21,21 @@ import Board from "./Board";
 import {headerMock} from "../mock";
 
 
-function Header() {
+function KanbanHeader({ changePanelMode, changeActivePanel, currentHeaderContext, changeCurrentHeaderContext }: any) {
     const platform = usePlatform();
     const hasHeader = platform !== VKCOM;
     const [contextOpened, setContextOpened] = useState(false)
-    const [mode, setMode] = useState('list')
-    const [currentHeaderContext, setCurrentHeaderContext] = useState(headerMock[0])
 
-    const toggleContext = () => {
+
+
+    const toggleContext: any = (headerContext: any) => {
         setContextOpened(prev => !prev);
+        (typeof headerContext === 'string') && changeCurrentHeaderContext(headerContext.toString())
     }
 
-    return (
 
+
+    return (
         <>
             <PanelHeader
                 left={<PanelHeaderBack />}
@@ -62,18 +64,23 @@ function Header() {
                 opened={contextOpened}
                 onClose={toggleContext}
             >
-
                 <List>
                     <Cell
-                        after={<Switch aria-label="Комментарии к записям" />}
+                        after={
+                            <Switch
+                                onChange={changePanelMode}
+                            />
+                        }
                     >
                         Режим таблицы
                     </Cell>
+                    <Separator style={{ margin: "12px 0" }} />
                     {
                         headerMock.map((headerContext, id) => (
                             <Cell
                                 after={<Icon24Done fill="var(--accent)" />}
                                 key={id}
+                                onClick={() => toggleContext(headerContext)}
                             >
                                 {headerContext}
                             </Cell>
@@ -85,4 +92,4 @@ function Header() {
 
     );
 }
-export default Header;
+export default KanbanHeader;

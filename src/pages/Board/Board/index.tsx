@@ -17,7 +17,7 @@ function Board() {
         {() => (
           <>
             {tasksGroupPresenter.taskGroups.map((task) => (
-              <div style={{ paddingRight: 5, paddingLeft: 5 }}>
+              <div style={{ padding: 80 }}>
                 <TasksGroup
                   task={task}
                   onSave={tasksGroupPresenter.setTask}
